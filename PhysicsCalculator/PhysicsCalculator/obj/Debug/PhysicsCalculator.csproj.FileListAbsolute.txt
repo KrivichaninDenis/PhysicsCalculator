@@ -1,0 +1,6 @@
+C:\Users\Кривичанин\Documents\Visual Studio 2012\Projects\PhysicsCalculator\PhysicsCalculator\bin\Debug\PhysicsCalculator.exe.config
+C:\Users\Кривичанин\Documents\Visual Studio 2012\Projects\PhysicsCalculator\PhysicsCalculator\obj\Debug\PhysicsCalculator.csprojResolveAssemblyReference.cache
+C:\Users\Кривичанин\Documents\Visual Studio 2012\Projects\PhysicsCalculator\PhysicsCalculator\bin\Debug\PhysicsCalculator.exe
+C:\Users\Кривичанин\Documents\Visual Studio 2012\Projects\PhysicsCalculator\PhysicsCalculator\bin\Debug\PhysicsCalculator.pdb
+C:\Users\Кривичанин\Documents\Visual Studio 2012\Projects\PhysicsCalculator\PhysicsCalculator\obj\Debug\PhysicsCalculator.exe
+C:\Users\Кривичанин\Documents\Visual Studio 2012\Projects\PhysicsCalculator\PhysicsCalculator\obj\Debug\PhysicsCalculator.pdb
