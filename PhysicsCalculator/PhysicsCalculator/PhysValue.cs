@@ -1,72 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhysicsCalculator
 {
     public class PhysValue
     {
-        public int Value;
+        public double Value;
         public string Measure;
 
-        public PhysValue(int val, string mes)
+        
+        
+        public static PhysValue operator +(PhysValue pv1, PhysValue pv2)
         {
-            Value = val;
-            Measure = mes;
-        }
-
-        public static PhysValue operator +(PhysValue PV1, PhysValue PV2)
-        {
-            if (PV1.Measure != PV2.Measure)
-            {
-                throw new InvalidOperationException("Ошибка операции");                
-            }
-            return new PhysValue(PV1.Value + PV2.Value, PV1.Measure);            
-        }
-
-
-        public static PhysValue operator -(PhysValue PV1, PhysValue PV2)
-        {
-            if (PV1.Measure != PV2.Measure)
+            if (pv1.Measure != pv2.Measure)
             {
                 throw new InvalidOperationException("Ошибка операции");
             }
-            return new PhysValue(PV1.Value - PV2.Value, PV1.Measure);
+            var newPhysvalue = new PhysValue
+            {
+                Value = pv1.Value + pv2.Value,
+                Measure = pv1.Measure
+            };
+            return  newPhysvalue;
         }
 
-        public static PhysValue operator /(PhysValue PV1, PhysValue PV2)
+
+        public static PhysValue operator -(PhysValue pv1, PhysValue pv2)
         {
-            string NewMessure=null;
-            if (PV1.Measure == PV2.Measure || PV1.Measure!=MeasurePr.Measures.Distance.ToString())
+            if (pv1.Measure != pv2.Measure)
             {
                 throw new InvalidOperationException("Ошибка операции");
             }
-
-            if (PV1.Measure == MeasurePr.Measures.Distance.ToString() && PV2.Measure == MeasurePr.Measures.Speed.ToString())
+            var newPhysvalue = new PhysValue
             {
-                NewMessure = MeasurePr.Measures.Time.ToString();
-            }
-
-            if (PV1.Measure == MeasurePr.Measures.Distance.ToString() && PV2.Measure == MeasurePr.Measures.Time.ToString())
-            {
-                NewMessure = MeasurePr.Measures.Speed.ToString();
-            }
-            return new PhysValue(PV1.Value / PV2.Value, NewMessure );
+                Value = pv1.Value - pv2.Value,
+                Measure = pv1.Measure
+            };
+            return newPhysvalue;
         }
 
-        public static PhysValue operator *(PhysValue PV1, PhysValue PV2)
-        {           
-            if (
-                (PV1.Measure != MeasurePr.Measures.Speed.ToString() || PV1.Measure != MeasurePr.Measures.Time.ToString())
-                && (PV2.Measure != MeasurePr.Measures.Time.ToString() && PV2.Measure != MeasurePr.Measures.Speed.ToString())
-                )
+        public static PhysValue operator /(PhysValue pv1, PhysValue pv2)
+        {
+            if (pv1.Value != null && pv1.Measure != null)
             {
-                throw new InvalidOperationException("Ошибка операции");
-            }
+                CalculateFormula.CalculationResult.Add(new OneElementInFormula(pv1.Value, pv1.Measure, 1));
+            }            
+                CalculateFormula.CalculationResult.Add(new OneElementInFormula(pv2.Value, pv2.Measure, -1));           
+            Check();
+            return SearchFormula(Program.Dict, CalculateFormula.CalculationResult); 
+        }
+
+        public static PhysValue operator *(PhysValue pv1, PhysValue pv2)
+        {
+            if (pv1.Value != null && pv1.Measure != null)
+            {
+                CalculateFormula.CalculationResult.Add(new OneElementInFormula(pv1.Value, pv1.Measure, 1));
+            }            
+                CalculateFormula.CalculationResult.Add(new OneElementInFormula(pv2.Value, pv2.Measure, 1));
+            
+            Check();
            
-            return new PhysValue(PV1.Value * PV2.Value, MeasurePr.Measures.Distance.ToString());
+            return SearchFormula(Program.Dict, CalculateFormula.CalculationResult); 
+        }
+
+        public static void Check()
+        {                     
+            CalculateFormula.CalculationResult = new List<OneElementInFormula>(CalculateFormula.CalculationResult.Distinct());
+        }
+
+        public static PhysValue SearchFormula(Dictionary dictionary, List<OneElementInFormula> results)//поиск формулы
+        {
+            
+            var newPhysValue = new PhysValue();
+         
+            foreach (var formula in dictionary.AllFormulas.Where(formula => CompareList(formula.Oneform, results)))
+            {
+                newPhysValue.Value = formula.Calculate(results);
+                newPhysValue.Measure = formula.Measure;                                  
+                return newPhysValue;
+            }
+            return newPhysValue;
+        }
+
+        public static bool CompareList(List<OneElementInFormula> f1, List<OneElementInFormula> f2)
+        {
+            if (f1.Count != f2.Count) return false; 
+            var count = f1.Count(f2.Contains);
+            return count == f1.Count;
         }
     }
 }

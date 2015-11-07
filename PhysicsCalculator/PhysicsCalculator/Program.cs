@@ -1,42 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PhysicsCalculator.Speed;
+using PhysicsCalculator.Time;
 
 namespace PhysicsCalculator
 {
+
     class Program
     {
-        static void Main(string[] args)
+        public static Dictionary Dict = new Dictionary();//Список всех формул 
+        static void Main()
         {
-            MeasurePr MyMeasure = new MeasurePr();
 
+            var f = new Formula//создание одной формулы
+            {
+                Name = "Acceleration",
+                Measure = "м/с^2"
+            }; 
+            //(для примера-формула ускорения)
+            //составляющие формулы.
+            f.Oneform.Add(new OneElementInFormula(0,"м/с",1));
+            f.Oneform.Add(new OneElementInFormula(0,"с",-1));
+            f.Oneform.Add(new OneElementInFormula(0, "с", -1));
+            Dict.AllFormulas.Add(f);
 
-            PhysValue Speed = new PhysValue(20,MeasurePr.Measures.Speed.ToString());
-            PhysValue Time = new PhysValue(10, MeasurePr.Measures.Time.ToString());
-            PhysValue Distance = new PhysValue(200, MeasurePr.Measures.Distance.ToString());
-            PhysValue Distance1 = new PhysValue(100, MeasurePr.Measures.Distance.ToString());
+            var v=new MeterPerSecond(60);                     
+            var t1=new Seconds(2);       
+            var t2=new Seconds(3);          
 
-            MyMeasure.Mes.Add("Speed", "м/c");
-            MyMeasure.Mes.Add("Time", "c");
-            MyMeasure.Mes.Add("Distance", "м");
-           
-           
-            PhysValue qwe=Distance+Distance1;
-            Console.WriteLine(qwe.Value + MyMeasure.SearchElement(qwe.Measure));
-
-            PhysValue qwe1 = Distance - Distance1;
-            Console.WriteLine(qwe1.Value + MyMeasure.SearchElement(qwe.Measure));
-
-            PhysValue NewSpeed = Distance/ Speed;
-            Console.WriteLine(NewSpeed.Value + MyMeasure.SearchElement(NewSpeed.Measure));
-
-            PhysValue NewDistance = Speed * Time;
-            Console.WriteLine(NewDistance.Value + MyMeasure.SearchElement(NewDistance.Measure));
-
-            PhysValue NewDistance1 = Time * Speed;
-            Console.WriteLine(NewDistance1.Value + MyMeasure.SearchElement(NewDistance1.Measure));
+            var q = v/t1/t2;     
+            
+            Console.WriteLine(q.Value+" "+q.Measure);  
+      
+         
         }
     }
 }
